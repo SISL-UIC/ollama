@@ -65,7 +65,8 @@ jobs:
   linux:
     needs:
     - changes
-    if: ${{ !cancelled() && (needs.changes.outputs.changed == 'True') }}
+    if: ${{ !cancelled() && (!cancelled() && (needs.changes.outputs.changed == 'True'))
+      }}
     strategy:
       matrix:
         include:
@@ -225,7 +226,7 @@ jobs:
       run: go test -count=1 -tags updater_live ./app/...
     - uses: golangci/golangci-lint-action@v9
     timeout-minutes: 6
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && (!cancelled()) }}
 env:
   PYTHONPATH: /tmp/instr
   BASH_ENV: /tmp/instr/bash_env.sh
